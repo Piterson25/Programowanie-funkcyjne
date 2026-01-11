@@ -1,27 +1,36 @@
 myFoldl f e [] = e
-myFoldl f e (x:xs) =
-    myFoldl f (f e x) xs
+myFoldl f e (x : xs) =
+  myFoldl f (f e x) xs
 
 myFoldr f e [] = e
-myFoldr f e (x:xs) =
-    f x (myFoldr f e xs)
+myFoldr f e (x : xs) =
+  f x (myFoldr f e xs)
 
 myFlip f x y = f y x
 
 -- a) prod
-myProd n = myFoldl (*) 1 n
+myProd = myFoldl (*) 1
 
 -- b) length
-myLength n = myFoldl (\x _ -> x + 1) 0 n
+myLength = myFoldl (\x _ -> x + 1) 0
 
 -- c) and
-myAnd n = myFoldl (&&) True n
+myAnd = myFoldl (&&) True
 
 -- d) gcd
-myGcd n = myFoldl gcd 0 n
+myGcd = myFoldl gcd 0
 
 -- e) reverse
-myReverse n = myFoldl (myFlip(:)) [] n
+myReverse = myFoldl (myFlip (:)) []
+
+-- f) delete
+myDelete e = myFoldr (\x acc -> if x == e then acc else x : acc) []
 
 -- g) map
-myMap f n = myFoldl f n
+myMap f = myFoldr (\x acc -> f x : acc) []
+
+-- h) filter
+myFilter p = myFoldr (\x acc -> if p x then x : acc else acc) []
+
+-- i) forall
+myForall p = myFoldr (\x acc -> p x && acc) True
